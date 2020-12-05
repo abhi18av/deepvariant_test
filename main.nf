@@ -20,7 +20,7 @@ CHR_BAM_BAI = "${HTTPDIR}/HG002.novaseq.pcr-free.35x.dedup.grch38_no_alt.chr20.b
 
 process DEEP_VARIANT {
     container "google/deepvariant:1.0.0"
-    cpu 100
+    cpus 100
     memory "100 GB"
 
     shell:
