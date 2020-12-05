@@ -71,8 +71,8 @@ process DEEP_VARIANT {
 
     '''
     mkdir output
-    
-    run_deepvariant \
+   
+   /opt/deepvariant/bin/run_deepvariant \
       --model_type WGS \
       --ref /reference/GRCh38_no_alt_analysis_set.fasta \
       --reads /input/HG002.novaseq.pcr-free.35x.dedup.grch38_no_alt.chr20.bam \
