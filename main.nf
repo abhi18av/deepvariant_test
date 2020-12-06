@@ -10,7 +10,7 @@ process DEEP_VARIANT {
 
     input:
     val(sample_name)
-    path(ref_fasta_gz)
+    path(ref_fasta)
     path(ref_fasta_fai)
     path(chr_bam)
     path(chr_bam_bai)
