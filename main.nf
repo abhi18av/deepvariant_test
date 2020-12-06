@@ -24,7 +24,7 @@ process DEEP_VARIANT {
     memory "32 GB"
 
     output:
-    path("/output")
+    path("output")
 
     shell:
 
