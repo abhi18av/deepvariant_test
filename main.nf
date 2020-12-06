@@ -30,36 +30,36 @@ process DEEP_VARIANT {
 
     '''
 
-mkdir -p /reference
+mkdir -p ./reference
 
 FTPDIR=ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids
 
-curl ${FTPDIR}/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz | gunzip > /reference/GRCh38_no_alt_analysis_set.fasta
-curl ${FTPDIR}/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.fai > /reference/GRCh38_no_alt_analysis_set.fasta.fai
+curl ${FTPDIR}/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz | gunzip > ./reference/GRCh38_no_alt_analysis_set.fasta
+curl ${FTPDIR}/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.fai > ./reference/GRCh38_no_alt_analysis_set.fasta.fai
 
 
-mkdir -p /benchmark
+mkdir -p ./benchmark
 
 FTPDIR=ftp://ftp.ncbi.nlm.nih.gov//giab/ftp/data/AshkenazimTrio/analysis/NIST_v4.2_SmallVariantDraftBenchmark_07092020
 
-curl ${FTPDIR}/HG002_GRCh38_1_22_v4.2_benchmark.bed > /benchmark/HG002_GRCh38_1_22_v4.2_benchmark.bed
-curl ${FTPDIR}/HG002_GRCh38_1_22_v4.2_benchmark.vcf.gz > /benchmark/HG002_GRCh38_1_22_v4.2_benchmark.vcf.gz
-curl ${FTPDIR}/HG002_GRCh38_1_22_v4.2_benchmark.vcf.gz.tbi > /benchmark/HG002_GRCh38_1_22_v4.2_benchmark.vcf.gz.tbi
+curl ${FTPDIR}/HG002_GRCh38_1_22_v4.2_benchmark.bed > ./benchmark/HG002_GRCh38_1_22_v4.2_benchmark.bed
+curl ${FTPDIR}/HG002_GRCh38_1_22_v4.2_benchmark.vcf.gz > ./benchmark/HG002_GRCh38_1_22_v4.2_benchmark.vcf.gz
+curl ${FTPDIR}/HG002_GRCh38_1_22_v4.2_benchmark.vcf.gz.tbi > ./benchmark/HG002_GRCh38_1_22_v4.2_benchmark.vcf.gz.tbi
 
 
-mkdir -p /input
+mkdir -p ./input
 HTTPDIR=https://storage.googleapis.com/deepvariant/case-study-testdata
 
-curl ${HTTPDIR}/HG002.novaseq.pcr-free.35x.dedup.grch38_no_alt.chr20.bam > /input/HG002.novaseq.pcr-free.35x.dedup.grch38_no_alt.chr20.bam
-curl ${HTTPDIR}/HG002.novaseq.pcr-free.35x.dedup.grch38_no_alt.chr20.bam.bai > /input/HG002.novaseq.pcr-free.35x.dedup.grch38_no_alt.chr20.bam.bai
+curl ${HTTPDIR}/HG002.novaseq.pcr-free.35x.dedup.grch38_no_alt.chr20.bam > ./input/HG002.novaseq.pcr-free.35x.dedup.grch38_no_alt.chr20.bam
+curl ${HTTPDIR}/HG002.novaseq.pcr-free.35x.dedup.grch38_no_alt.chr20.bam.bai > ./input/HG002.novaseq.pcr-free.35x.dedup.grch38_no_alt.chr20.bam.bai
 
 mkdir -p ./output
 mkdir -p ./output/intermediate_results_dir
 
     /opt/deepvariant/bin/run_deepvariant \
       --model_type WGS \
-      --ref /reference/GRCh38_no_alt_analysis_set.fasta \
-      --reads /input/HG002.novaseq.pcr-free.35x.dedup.grch38_no_alt.chr20.bam \
+      --ref ./reference/GRCh38_no_alt_analysis_set.fasta \
+      --reads ./input/HG002.novaseq.pcr-free.35x.dedup.grch38_no_alt.chr20.bam \
       --output_vcf ./output/HG002.output.vcf.gz \
       --output_gvcf ./output/HG002.output.g.vcf.gz \
       --num_shards $(nproc) \
