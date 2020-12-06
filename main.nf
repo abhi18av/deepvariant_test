@@ -16,9 +16,9 @@ process DEEP_VARIANT {
     output:
     path("output")
 
-    shell:
+    script:
 
-    '''
+   """
    mkdir ./output
    
    /opt/deepvariant/bin/run_deepvariant \
@@ -27,10 +27,10 @@ process DEEP_VARIANT {
       --reads HG002.novaseq.pcr-free.35x.dedup.grch38_no_alt.chr20.bam \
       --output_vcf ./output/HG002.output.vcf.gz \
       --output_gvcf ./output/HG002.output.g.vcf.gz \
-      --num_shards $(nproc) \
+      --num_shards ${task.cpus} \
       --regions chr20 
       
-   '''
+   """
 
 }
 
