@@ -3,6 +3,8 @@ nextflow.enable.dsl = 2
 
 
 process DOWNLOAD_FILES {
+    container "google/deepvariant:1.0.0"
+
     input:
     file(ref_fasta_gz)
     file(ref_fasta_fai)
@@ -22,18 +24,18 @@ process DOWNLOAD_FILES {
     script:
     """
 
-    mkdir reference
-    mv $ref_fasta_gz reference
-    mv $ref_fasta_fai reference
+    mkdir ./reference
+    mv $ref_fasta_gz ./reference
+    mv $ref_fasta_fai ./reference
 
     mkdir benchmark
-    mv $bed_file benchmark
-    mv $vcf_file benchmark
-    mv $vcf_index_file  benchmark
+    mv $bed_file ./benchmark
+    mv $vcf_file ./benchmark
+    mv $vcf_index_file  ./benchmark
     
-    mkdir input
-    mv $chr_bam input
-    mv $chr_bam_bai input
+    mkdir ./input
+    mv $chr_bam ./input
+    mv $chr_bam_bai ./input
 
     """
 
@@ -42,6 +44,9 @@ process DOWNLOAD_FILES {
 
 process DEEP_VARIANT {
     container "google/deepvariant:1.0.0"
+    cpus 16
+    memory "32 GB"
+
 
     input:
     path(reference)
@@ -54,14 +59,14 @@ process DEEP_VARIANT {
     shell:
 
     '''
-    mkdir output
+   mkdir ./output
    
    /opt/deepvariant/bin/run_deepvariant \
       --model_type WGS \
-      --ref /reference/GRCh38_no_alt_analysis_set.fasta \
-      --reads /input/HG002.novaseq.pcr-free.35x.dedup.grch38_no_alt.chr20.bam \
-      --output_vcf /output/HG002.output.vcf.gz \
-      --output_gvcf /output/HG002.output.g.vcf.gz \
+      --ref ./reference/GRCh38_no_alt_analysis_set.fasta \
+      --reads ./input/HG002.novaseq.pcr-free.35x.dedup.grch38_no_alt.chr20.bam \
+      --output_vcf ./output/HG002.output.vcf.gz \
+      --output_gvcf ./output/HG002.output.g.vcf.gz \
       --num_shards $(nproc) \
       --regions chr20 
       
@@ -70,7 +75,7 @@ process DEEP_VARIANT {
 }
 
 
-workflow {
+workflow wgs_test {
 // References
     REF_FTPDIR = "ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids"
     ref_fasta_gz = "${REF_FTPDIR}/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz"
@@ -98,5 +103,6 @@ workflow {
             chr_bam,
             chr_bam_bai
     )
+
     DEEP_VARIANT(DOWNLOAD_FILES.out)
 }
