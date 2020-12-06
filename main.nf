@@ -53,18 +53,18 @@ HTTPDIR=https://storage.googleapis.com/deepvariant/case-study-testdata
 curl ${HTTPDIR}/HG002.novaseq.pcr-free.35x.dedup.grch38_no_alt.chr20.bam > /input/HG002.novaseq.pcr-free.35x.dedup.grch38_no_alt.chr20.bam
 curl ${HTTPDIR}/HG002.novaseq.pcr-free.35x.dedup.grch38_no_alt.chr20.bam.bai > /input/HG002.novaseq.pcr-free.35x.dedup.grch38_no_alt.chr20.bam.bai
 
-mkdir -p output
-mkdir -p output/intermediate_results_dir
+mkdir -p ./output
+mkdir -p ./output/intermediate_results_dir
 
     /opt/deepvariant/bin/run_deepvariant \
       --model_type WGS \
       --ref /reference/GRCh38_no_alt_analysis_set.fasta \
       --reads /input/HG002.novaseq.pcr-free.35x.dedup.grch38_no_alt.chr20.bam \
-      --output_vcf output/HG002.output.vcf.gz \
-      --output_gvcf output/HG002.output.g.vcf.gz \
+      --output_vcf ./output/HG002.output.vcf.gz \
+      --output_gvcf ./output/HG002.output.g.vcf.gz \
       --num_shards $(nproc) \
       --regions chr20 \
-      --intermediate_results_dir output/intermediate_results_dir
+      --intermediate_results_dir ./output/intermediate_results_dir
       
    '''
 
